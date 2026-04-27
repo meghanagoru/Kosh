@@ -1,0 +1,622 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* -------------------------------------------------------------------------
+   Koshya Design System — CSS Custom Properties
+   Swiss Minimalism / International Typographic Style
+   ------------------------------------------------------------------------- */
+
+:root {
+  /* Core palette */
+  --color-ink: #000000;
+  --color-paper: #FFFFFF;
+  --color-leak: #FF4F00;      /* International Orange — Value Leaks ONLY */
+  --color-rule: #E0E0E0;      /* 1px border on light */
+  --color-muted: #767676;
+  --color-dim: #ADADAD;
+  --color-surface: #F7F7F7;   /* subtle section bg */
+
+  /* Typography */
+  --font-ui: 'Inter', system-ui, sans-serif;
+  --font-data: 'JetBrains Mono', Consolas, monospace;
+
+  /* Baseline grid */
+  --grid-unit: 8px;
+  --section-pad: clamp(5rem, 12vw, 11rem);
+
+  /* Nav */
+  --nav-h: 60px;
+  --tab-h: 48px;
+
+  /* Transitions */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast: 150ms;
+  --duration-mid: 250ms;
+  --duration-slow: 400ms;
+}
+
+/* Dark mode overrides */
+.dark {
+  --color-ink: #FFFFFF;
+  --color-paper: #0A0A0A;
+  --color-rule: #2A2A2A;
+  --color-muted: #8A8A8A;
+  --color-dim: #5A5A5A;
+  --color-surface: #111111;
+}
+
+/* -------------------------------------------------------------------------
+   Base Reset
+   ------------------------------------------------------------------------- */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border-radius: 0 !important;
+}
+
+html {
+  font-family: var(--font-ui);
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  line-height: 1.6;
+  transition: background-color var(--duration-slow) var(--ease),
+              color var(--duration-slow) var(--ease);
+}
+
+/* -------------------------------------------------------------------------
+   Typography Utilities
+   ------------------------------------------------------------------------- */
+
+.type-display {
+  font-family: var(--font-ui);
+  font-size: clamp(3.5rem, 10vw, 9rem);
+  font-weight: 900;
+  line-height: 0.93;
+  letter-spacing: -0.04em;
+}
+
+.type-heading {
+  font-family: var(--font-ui);
+  font-size: clamp(1.75rem, 4vw, 3.5rem);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.type-subheading {
+  font-family: var(--font-ui);
+  font-size: clamp(1rem, 2vw, 1.375rem);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.type-label {
+  font-family: var(--font-ui);
+  font-size: 0.625rem;
+  font-weight: 500;
+  line-height: 1.6;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.type-body {
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.85;
+  letter-spacing: 0.01em;
+}
+
+.type-data {
+  font-family: var(--font-data);
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.type-data-lg {
+  font-family: var(--font-data);
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.type-data-sm {
+  font-family: var(--font-data);
+  font-size: 0.9375rem;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+/* -------------------------------------------------------------------------
+   Color Utilities
+   ------------------------------------------------------------------------- */
+
+.text-ink { color: var(--color-ink); }
+.text-paper { color: var(--color-paper); }
+.text-leak { color: var(--color-leak); }
+.text-muted { color: var(--color-muted); }
+.text-dim { color: var(--color-dim); }
+.bg-paper { background-color: var(--color-paper); }
+.bg-ink { background-color: var(--color-ink); }
+.bg-leak { background-color: var(--color-leak); }
+.bg-surface { background-color: var(--color-surface); }
+.border-rule { border-color: var(--color-rule); }
+.border-ink { border-color: var(--color-ink); }
+
+/* -------------------------------------------------------------------------
+   Component: Koshya Rule (horizontal divider)
+   ------------------------------------------------------------------------- */
+
+.k-rule {
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-rule);
+}
+
+/* -------------------------------------------------------------------------
+   Component: Metric Card
+   ------------------------------------------------------------------------- */
+
+.metric-card {
+  border: 1px solid var(--color-rule);
+  padding: 2.5rem 2rem;
+  transition: border-color var(--duration-fast) var(--ease);
+}
+
+.metric-card:hover {
+  border-color: var(--color-ink);
+}
+
+/* -------------------------------------------------------------------------
+   Component: Swiss Button
+   ------------------------------------------------------------------------- */
+
+.k-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.875rem 1.75rem;
+  border: 1px solid var(--color-ink);
+  background: transparent;
+  color: var(--color-ink);
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease),
+              color var(--duration-fast) var(--ease);
+}
+
+.k-btn:hover {
+  background-color: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.k-btn-primary {
+  background-color: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.k-btn-primary:hover {
+  background-color: var(--color-leak);
+  border-color: var(--color-leak);
+}
+
+/* -------------------------------------------------------------------------
+   Component: Input / Number Field
+   ------------------------------------------------------------------------- */
+
+.k-input {
+  width: 100%;
+  border: 1px solid var(--color-rule);
+  background: transparent;
+  color: var(--color-ink);
+  font-family: var(--font-data);
+  font-size: 1.0625rem;
+  padding: 0.75rem 0.875rem;
+  outline: none;
+  transition: border-color var(--duration-fast) var(--ease);
+  -moz-appearance: textfield;
+  line-height: 1.5;
+}
+
+.k-input::-webkit-outer-spin-button,
+.k-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.k-input:focus {
+  border-color: var(--color-ink);
+}
+
+.k-input::placeholder {
+  color: var(--color-dim);
+  font-family: var(--font-data);
+}
+
+/* -------------------------------------------------------------------------
+   Component: Slider (Range)
+   ------------------------------------------------------------------------- */
+
+.k-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 1px;
+  background: var(--color-rule);
+  outline: none;
+  cursor: pointer;
+  position: relative;
+}
+
+.k-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background: var(--color-ink);
+  cursor: pointer;
+  border: 1px solid var(--color-ink);
+  transition: background-color var(--duration-fast) var(--ease),
+              transform var(--duration-fast) var(--ease);
+}
+
+.k-slider::-webkit-slider-thumb:hover {
+  background: var(--color-leak);
+  border-color: var(--color-leak);
+  transform: scale(1.15);
+}
+
+.k-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  background: var(--color-ink);
+  cursor: pointer;
+  border: 1px solid var(--color-ink);
+  border-radius: 0;
+}
+
+/* -------------------------------------------------------------------------
+   Component: Info Tooltip Button (replaces numbered footnote refs)
+   ------------------------------------------------------------------------- */
+
+.info-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--color-muted);
+  font-size: 0.6rem;
+  font-weight: 700;
+  font-style: italic;
+  font-family: Georgia, serif;
+  cursor: pointer;
+  vertical-align: middle;
+  margin-left: 4px;
+  line-height: 1;
+  color: var(--color-muted);
+  background: transparent;
+  flex-shrink: 0;
+  transition: border-color var(--duration-fast) var(--ease),
+              color var(--duration-fast) var(--ease);
+  position: relative;
+  top: -1px;
+}
+
+.info-btn:hover {
+  border-color: var(--color-ink);
+  color: var(--color-ink);
+}
+
+/* Backwards compat alias — same styles as .info-btn */
+.footnote-ref {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--color-muted);
+  font-size: 0.6rem;
+  font-weight: 700;
+  font-style: italic;
+  font-family: Georgia, serif;
+  cursor: pointer;
+  vertical-align: middle;
+  margin-left: 4px;
+  line-height: 1;
+  color: var(--color-muted);
+  background: transparent;
+  flex-shrink: 0;
+  transition: border-color var(--duration-fast) var(--ease),
+              color var(--duration-fast) var(--ease);
+  position: relative;
+  top: -1px;
+}
+
+.footnote-ref:hover {
+  border-color: var(--color-ink);
+  color: var(--color-ink);
+}
+
+/* -------------------------------------------------------------------------
+   Component: Tooltip Drawer
+   ------------------------------------------------------------------------- */
+
+.footnote-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 360px;
+  height: 100vh;
+  background: var(--color-paper);
+  border-left: 1px solid var(--color-ink);
+  z-index: 200;
+  transform: translateX(100%);
+  transition: transform var(--duration-mid) var(--ease);
+  overflow-y: auto;
+  padding: 2.5rem 2rem;
+}
+
+.footnote-drawer.open {
+  transform: translateX(0);
+}
+
+/* -------------------------------------------------------------------------
+   Layout Utilities
+   ------------------------------------------------------------------------- */
+
+.k-container {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 clamp(1.5rem, 5vw, 5rem);
+}
+
+.k-section {
+  padding-top: var(--section-pad);
+  padding-bottom: var(--section-pad);
+  border-top: 1px solid var(--color-rule);
+}
+
+.k-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+
+.k-grid-3 > * {
+  border-right: 1px solid var(--color-rule);
+}
+
+.k-grid-3 > *:last-child {
+  border-right: none;
+}
+
+/* -------------------------------------------------------------------------
+   Component: Adjusted Rupee Visual
+   ------------------------------------------------------------------------- */
+
+.adjusted-rupee-wrap {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 0;
+  align-items: start;
+}
+
+@media (max-width: 640px) {
+  .adjusted-rupee-wrap {
+    grid-template-columns: 1fr;
+  }
+}
+
+.adjusted-rupee-canvas-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.5rem 2rem;
+  border-right: 1px solid var(--color-rule);
+}
+
+@media (max-width: 640px) {
+  .adjusted-rupee-canvas-col {
+    border-right: none;
+    border-bottom: 1px solid var(--color-rule);
+  }
+}
+
+.adjusted-rupee-data-col {
+  padding: 2.5rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+/* -------------------------------------------------------------------------
+   Leak indicator
+   ------------------------------------------------------------------------- */
+
+.leak-bar {
+  height: 3px;
+  background: var(--color-rule);
+  position: relative;
+  overflow: hidden;
+}
+
+.leak-bar-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--color-leak);
+  transition: width var(--duration-slow) var(--ease);
+}
+
+/* -------------------------------------------------------------------------
+   Insight Card
+   ------------------------------------------------------------------------- */
+
+.insight-card {
+  border: 1px solid var(--color-rule);
+  padding: 3rem 2.5rem;
+  position: relative;
+  transition: border-color var(--duration-fast) var(--ease);
+}
+
+.insight-card:hover {
+  border-color: var(--color-ink);
+}
+
+.insight-recovery {
+  font-family: var(--font-data);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+/* -------------------------------------------------------------------------
+   Form Select
+   ------------------------------------------------------------------------- */
+
+.k-select {
+  width: 100%;
+  border: 1px solid var(--color-rule);
+  background: transparent;
+  color: var(--color-ink);
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  padding: 0.75rem 0.875rem;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23000' stroke-width='1' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.875rem center;
+  padding-right: 2.5rem;
+  transition: border-color var(--duration-fast) var(--ease);
+  line-height: 1.5;
+}
+
+.dark .k-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23FFF' stroke-width='1' fill='none'/%3E%3C/svg%3E");
+}
+
+.k-select:focus {
+  border-color: var(--color-ink);
+}
+
+/* -------------------------------------------------------------------------
+   Radio / Checkbox
+   ------------------------------------------------------------------------- */
+
+.k-radio, .k-checkbox {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--color-rule);
+  background: transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: border-color var(--duration-fast) var(--ease),
+              background-color var(--duration-fast) var(--ease);
+}
+
+.k-radio:checked, .k-checkbox:checked {
+  background-color: var(--color-ink);
+  border-color: var(--color-ink);
+}
+
+/* -------------------------------------------------------------------------
+   Audit Form Specifics
+   ------------------------------------------------------------------------- */
+
+.audit-section {
+  margin-bottom: 4rem;
+}
+
+.audit-section-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 1.25rem;
+  margin-bottom: 0;
+  border-bottom: 1px solid var(--color-rule);
+}
+
+.audit-field {
+  padding: 1.75rem 2rem;
+  border-bottom: 1px solid var(--color-rule);
+}
+
+.audit-field:last-child {
+  border-bottom: none;
+}
+
+.audit-field label.field-label {
+  display: block;
+  font-family: var(--font-ui);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  margin-bottom: 0.375rem;
+  line-height: 1.5;
+}
+
+.audit-field p.field-hint {
+  font-family: var(--font-ui);
+  font-size: 0.8125rem;
+  color: var(--color-muted);
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+/* -------------------------------------------------------------------------
+   Animations
+   ------------------------------------------------------------------------- */
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-in {
+  animation: fadeIn var(--duration-mid) var(--ease) both;
+}
+
+@keyframes pulseLeakBar {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.6; }
+}
+
+.pulse-leak {
+  animation: pulseLeakBar 2s ease-in-out infinite;
+}
+
+/* -------------------------------------------------------------------------
+   Scrollbar
+   ------------------------------------------------------------------------- */
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-rule); }
+::-webkit-scrollbar-thumb:hover { background: var(--color-muted); }

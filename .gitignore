@@ -1,0 +1,45 @@
+# ─── OS & Editor ────────────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*.swp
+*.swo
+.vscode/settings.json
+.idea/
+
+# ─── Frontend (Next.js) ──────────────────────────────────────────────────────
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/.env*.local
+frontend/.env.development
+frontend/.env.production
+frontend/.vercel
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/.pnpm-debug.log*
+
+# ─── Backend (Python / FastAPI) ──────────────────────────────────────────────
+backend/__pycache__/
+backend/**/__pycache__/
+backend/*.py[cod]
+backend/*$py.class
+backend/*.egg-info/
+backend/dist/
+backend/build/
+backend/.eggs/
+backend/venv/
+backend/env/
+backend/.env
+backend/data/latest_cpi.json
+
+# ─── Misc ────────────────────────────────────────────────────────────────────
+*.log
+*.pid
+.env
