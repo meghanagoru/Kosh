@@ -4,10 +4,18 @@ Sovereign Ledger Calculation Engine
 """
 from __future__ import annotations
 
+import os
+from contextlib import asynccontextmanager
+from pathlib import Path
+
+from dotenv import load_dotenv
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from motor.motor_asyncio import AsyncIOMotorClient
 from pydantic import BaseModel, Field
 from typing import Optional
+
+from koshya_state_routes import router as koshya_state_router
 
 from calculations import (
     InflationRates, UserWeights, AuditData,
@@ -17,6 +25,28 @@ from mospi_parser import get_latest_rates, save_rates, parse_mospi_csv
 from ai_insights import generate_insights
 
 # ---------------------------------------------------------------------------
+# Environment & MongoDB
+# ---------------------------------------------------------------------------
+
+_BACKEND_ROOT = Path(__file__).resolve().parent
+load_dotenv(_BACKEND_ROOT / ".env")
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    uri = os.environ.get("MONGODB_URI", "mongodb://127.0.0.1:27017/kosh")
+    mongo_client = AsyncIOMotorClient(uri)
+    app.state.mongo_client = mongo_client
+    col = mongo_client.get_default_database()["koshya_state"]
+    await col.create_index([("client_id", 1)], unique=True)
+    app.state.koshya_collection = col
+    try:
+        yield
+    finally:
+        mongo_client.close()
+
+
+# ---------------------------------------------------------------------------
 # App Setup
 # ---------------------------------------------------------------------------
 
@@ -24,6 +54,7 @@ app = FastAPI(
     title="Koshya API",
     description="The Sovereign Ledger — Personal Inflation Intelligence Engine",
     version="1.0.0",
+    lifespan=lifespan,
 )
 
 app.add_middleware(
@@ -33,6 +64,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(koshya_state_router, prefix="/api")
 
 
 # ---------------------------------------------------------------------------

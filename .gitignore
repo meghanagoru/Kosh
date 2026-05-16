@@ -38,6 +38,7 @@ backend/venv/
 backend/env/
 backend/.env
 backend/data/latest_cpi.json
+backend/.venv/
 
 # ─── Misc ────────────────────────────────────────────────────────────────────
 *.log

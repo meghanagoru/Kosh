@@ -275,7 +275,7 @@ export default function HomePage() {
             <div>
               <p className="type-label text-muted" style={{ marginBottom: '0.875rem' }}>Privacy</p>
               <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.875rem', lineHeight: 1.85, color: 'var(--color-muted)' }}>
-                All data stays in your browser via localStorage. Nothing is logged or transmitted beyond this session.
+                Your Koshya session is stored under an anonymous id on your own MongoDB (via the API). Calculation and insight requests go to your backend when you run it locally.
               </p>
             </div>
           </div>
