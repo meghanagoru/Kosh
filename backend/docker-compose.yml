@@ -1,0 +1,36 @@
+name: kosh
+
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    # Not published to the host; only the app container connects (production-style).
+
+  web:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "5000:5000"
+    depends_on:
+      mongo:
+        condition: service_healthy
+    command:
+      - sh
+      - -c
+      - >
+        uvicorn app.main:app
+        --host $${UVICORN_HOST:-0.0.0.0}
+        --port $${UVICORN_PORT:-5000}
+        --workers $${UVICORN_WORKERS:-2}
+
+volumes:
+  mongo_data:

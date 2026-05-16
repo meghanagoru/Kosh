@@ -1,0 +1,1 @@
+"""Kosh application package."""
