@@ -1,17 +1,17 @@
 'use client'
 
 import React, { useState } from 'react'
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import KoshyaNav from '@/components/KoshyaNav'
 import { useKoshyaStore, AuditFormData } from '@/hooks/useKoshyaStore'
 
 const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 
 export default function AuditPage() {
+  const router = useRouter()
   const { audit, setAudit, inflationResult, setShadowTax, setInsights, setHasSubmittedAudit } = useKoshyaStore()
   const [dark, setDark] = useState(false)
   const [submitting, setSubmitting] = useState(false)
-  const [done, setDone] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const update = <K extends keyof AuditFormData>(key: K, value: AuditFormData[K]) =>
@@ -56,11 +56,14 @@ export default function AuditPage() {
       ])
       const stData = await stRes.json()
       const insData = await insRes.json()
+      if (!stRes.ok || !insRes.ok) {
+        setError('Calculation failed. Please check your inputs and try again.')
+        return
+      }
       setShadowTax(stData)
       setInsights(insData.insights ?? [])
       setHasSubmittedAudit(true)
-      setDone(true)
-      window.scrollTo({ top: 0, behavior: 'smooth' })
+      router.push('/insights')
     } catch (err) {
       setError('Could not reach the backend. Make sure the API server is running.')
     } finally {
@@ -75,20 +78,6 @@ export default function AuditPage() {
     <div className={dark ? 'dark' : ''}>
       <div className="bg-paper text-ink min-h-screen">
         <KoshyaNav dark={dark} onDarkToggle={() => setDark(v => !v)} />
-
-        {/* Success banner */}
-        {done && (
-          <div
-            className="bg-ink text-paper k-container py-4 flex items-center justify-between gap-4 flex-wrap"
-          >
-            <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.9375rem', lineHeight: 1.6 }}>
-              ✓ Audit complete — your insights are ready.
-            </p>
-            <Link href="/insights" className="k-btn no-underline" style={{ borderColor: 'var(--color-paper)', color: 'var(--color-paper)', fontSize: '0.6875rem' }}>
-              View Insights →
-            </Link>
-          </div>
-        )}
 
         {/* Page header */}
         <div
@@ -417,16 +406,6 @@ export default function AuditPage() {
               >
                 {submitting ? 'Calculating···' : 'Generate Insights →'}
               </button>
-
-              {done && (
-                <Link
-                  href="/insights"
-                  className="k-btn no-underline"
-                  style={{ fontSize: '0.6875rem' }}
-                >
-                  View Insights →
-                </Link>
-              )}
 
               <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.8125rem', lineHeight: 1.7, color: 'var(--color-dim)', flexGrow: 1 }}>
                 Fields marked * are required for hidden cost calculation.
